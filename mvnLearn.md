@@ -1,9 +1,6 @@
 # MVN learn book   
 ## 静态语言编译  
 
-
-## 静态语言编译  
-
 code--compile-->.bin （c,c++,etc)  
 code--compile-->.class--JVM-->.bin (java)  
 
