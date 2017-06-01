@@ -98,7 +98,6 @@ code--compile-->.class--JVM-->.bin (java)
 		<module>account-email</module>
 		<module>account-persist</module>
 	</modules>
-	xxx.version
 </project>
 ```
 **说明：** 
@@ -148,4 +147,4 @@ code--compile-->.class--JVM-->.bin (java)
 
 MVN的聚合和继承变化很灵活，下图演示两种常用使用方法：
 
-![mvn Inh+Aggre](https://github.com/SuperemeFrank/gitRepo/blob/master/mvn_Inh%2BAggre.png)
+![mvn Inh+Aggre](mvn_Inh%2BAggre.png)
