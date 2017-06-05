@@ -5,7 +5,7 @@ code--compile-->.bin （c,c++,etc)
 code--compile-->.class--JVM-->.bin (java)  
 
 * 只有.bin这个二进制文件才是机器可以识别的.  
-* 静态语言分为中间转换型语言（java,.net)和直接编译型语言(c,c++)，java通过JVM来对编译出来的二进制.class文件根据运行平台不同(windows/linux)进行翻译，以实现跨平台。
+* 静态语言分为中间解释型语言（java,.net)和编译型语言(c,c++)，java通过JVM来对编译出来的二进制.class文件根据运行平台不同(windows/linux)进行翻译，以实现跨平台。
 
 ## 测试
 * **黑盒测试**：由专业测试人员测试，他们并不关心代码实现或者代码结构，单纯地对软件功能进行测试。
