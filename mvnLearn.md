@@ -155,7 +155,7 @@ code--compile-->.class--JVM-->.bin (java)
 
 MVN的聚合和继承变化很灵活，下图演示两种常用使用方法：
 
-![mvn Inh+Aggre](mvn_Inh%2BAggre.png)
+![mvn Inh+Aggre](graphs/mvn_Inh%2BAggre.png)
 
 第一种`Aggre only`模块只负责聚合，子模块不会去继承`Agree only`模块中的依赖和插件等，所有的子模块依赖和插件全部放到`Account-parent`模块里面，通过<parent>标签所有子模块继承这个模块。
 
@@ -208,7 +208,7 @@ MVN的聚合和继承变化很灵活，下图演示两种常用使用方法：
 
 私服是一种特殊的远程仓库，它是架设在局域网内的仓库服务，私服代理广域网上的远程仓库，供局域网内的MVN用户使用。私服的示例图如下：
 
-![Private Server](sifu.png)
+![Private Server](graphs/sifu.png)
 
 私服好处有这么几点：
 
