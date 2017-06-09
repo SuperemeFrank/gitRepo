@@ -3,7 +3,7 @@ public class Num2RMB {
 	private String[] unitArr={"十","佰","仟","万"};
 	private String[] unit2Arr={"角","分"};
 	//分割double类型整数和小数部分，分成两个String类型
-	public String[] divide(double num){
+	static public String[] divide(double num){
 		int formerNum=(int)num;
 		int latterNum=(int)((num-formerNum)*100);
 		if(Integer.toString(latterNum).length()<2){
@@ -40,8 +40,9 @@ public class Num2RMB {
 		return result;
 	}
 	public static void main(String[] args) {
-		Num2RMB nr=new Num2RMB();
-		String[] ns=nr.divide(12300.123);
-		System.out.println(nr.toHandStr(ns));
+		//Num2RMB nr=new Num2RMB();
+		String[] ns=Num2RMB.divide(12300.123);
+		System.out.println(ns[0]+";"+ns[1]);
+		//System.out.println(nr.toHandStr(ns));
 	}
 }
