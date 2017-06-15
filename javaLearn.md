@@ -281,8 +281,98 @@ java中确定一个方法有三个要素：
 * 覆盖方法必须是相同的`static`状态   
 
 #### super限定
--
 
+当子类覆盖了父类的方法时，使用`super`限定任然可以调用父类实例的方法。`super`也可调用父类的Field。也就是说在子类里面有和父类同名且同参数列表的方法或者同名的Field的话都会发生覆盖，想要访问父类的话就需要用`super`。
+
+`注意：super与this 一样不能出现在static修饰的方法中，他们针对的都是实例对象而不是类。`
+
+#### this与super
+
+在Java中`this`与`super`的用法是非常相像的：  
+	①他们都是针对对象而不针对类  
+	②`this`是针对类之间方法的互相调用，`super`是用于子类调用父类方法。  
+	③`this`用于同一个类中方法局部变量和类Field重载的调用，`super`用于子类和父类中Field重写的调用。
+
+#### 重载和重写区别
+
+重载(overload)和重写(override)的区别在于：重载发生在同一个类多个同名方法之间，而重写发生在父类和子类同名方法之间，两者本身不具有太多的可比性。
+
+	注意：子类和父类之间也可能发生重载，如果子类中定义了一个和父类方法名相同，但是参数列表不同的方法就会发生重载
+
+#### 系统查找子类方法中 a 的顺序
+
+（1）查找该方法中是否有名为a的局部变量  
+（2）查找当前类中是否有名为a的Field  
+（3）查找该子类直接父类中是否有名为a的Field，依次上溯所有父类，没找到报错
+
+#### 调用父类构造器
+
+方法与在一个类中构造器之间互相调用是一个道理，只是同一个类中构造器互相调用用`this()`，而在子类构造器（只有在子类构造器中才能调用父类构造器）中调用父类构造器则用`super()`。
 	
+### 多态
+-
+代码：
 
+```
+class BaseClass {
+	public int book=6;
+	public void base(){
+		System.out.println("父类的普通方法");
+	}
+	public void test(){
+		System.out.println("父类被覆盖的方法");
+	}
+}
 
+public class SubClass extends BaseClass {
+	//重新定义一个Field隐藏父类的book
+	public String book="轻量级JAVA教程";
+	public void test(){
+		System.out.println("子类覆盖父类的方法");
+	}
+	public void sub(){
+		System.out.println("子类的普通方法");
+	}
+	public static void main(String[] args) {
+		BaseClass bc=new BaseClass();
+		bc.base();
+		bc.test();
+		System.out.println(bc.book);
+		SubClass sc=new SubClass();
+		sc.base();
+		//输出“子类覆盖父类的方法”，表明父类test方法已经被子类重写了
+		sc.test();
+		//输出“轻量级JAVA教程”，表明父类Field被子类隐藏了
+		System.out.println(sc.book);
+		//下面编译时类型和运行时类型不同，发生多态
+		BaseClass pc=new SubClass();
+		//输出6
+		System.out.println(pc.book);
+		//输出“子类覆盖父类的方法”
+		pc.test();
+		//输出“父类的普通方法”
+		pc.base();
+		//运行出错
+		pc.sub();
+	}
+}
+```
+
+前面sc和bc两个引用变量它们的运行时类型和编译时类型完全相同（即`BaseClass()`和`BaseClass`相同），所以调用的方法和Field正常。但是pc的运行时类型是`SubClass`，编译时类型是`BaseClass`，因此就出现了多态。调用`pc.test()`的时候因为`SubClass`类中覆盖了`BaseClass`类中的test方法，因此调用的就是`SubClass`类中的test方法，这就导致了可能出现：**相同类型的变量，调用同一个方法的时候出现不同的行为特征，这就是多态！**
+
+但是`pc.sub()`在编译的时候会出错，虽然pc引用变量中确实包含了`sub`方法，但是`sub()`方法并不在`BaseClass`类中。
+
+**当出现运行时类型和编译时类型不一致时，变量调用一个方法会先去检查编译时类型里面有没有这个方法，没有则出错；如果有这个方法则到运行时类型里面去检查是否有同名且参数列表相同的方法，如果有则调用运行时类型中的方法，如果没有则运行编译时类型中的方法。**
+
+**JAVA允许将子类对象直接赋给父类对象，因为子类对象本身就是一个特殊的父类对象，这种方法叫做“向上转型”，向上转型由系统自动完成。**
+
+### 引用变量的强制类型转换
+-
+引用变量只能调用它编译时类型的方法，而不能调用它运行时类型的方法，尽管它可能确实包含这种方法，如果要运行它的运行时类型方法则需要将它强制转换成运行时类型。
+
+引用变量的强制转换方法与基本类型相似`(type)variable`,它可以将一个**引用变量类型转换成其子类类型**，但不是万能的，要注意：
+
+* **基本类型之间的转换只能在数值类型之间进行，数值类型指：整数类型、浮点类型、字符类型。数值类型不能和布尔类型转换**
+* **引用类型之间的转换必须在具有继承关系的两个关系之间进行，并且想要把一个父类型实例转换成其子类型实例，则这个实例必须在实际意义上(即运行时类型)是子类实例才行。如上面代码实例，BaseClass实例 pc 可以强制转换成SubClass,而BaseClass 实例bc则不能转换成SubClass，因为bc的运行时类型不是SubClass。**
+
+可以使用`instanceof` 
