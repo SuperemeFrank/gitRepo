@@ -162,10 +162,14 @@ b数组长度：4
 ### 定义类
 -
 * 常见的可以定义3个：构造器、Field(成员变量)、方法。
-  * 构造器：创建对象的根本途径，如果不设置java会默认一个构造器。构造器实际上是有返回值的，返回的值就是该类的一个实例。
+  * 构造器：创建对象的根本途径，如果不设置java会默认一个构造器。构造器实际上是有返回值的，返回的值就是该类的一个实例。构造器都是通过`new`来调用。
+
+* **修饰符：**`public/protected/private  static final/abstract`,其中`final 和 abstract`互斥，他们可以和`static`组合起来修饰方法。
+
+
 
 * **static修饰符：**该关键字可以修饰Field和方法，static修饰的表示它属于这个类本身，而不属于该类的单个实例，例如：`Integer.toString(int a)`,这个toString(int i)方法就是static方法，由该类直接调用而不是Integer类的某一个实例调用。（当然Integer实例也有toString()方法，不过注意：Integer的非static方法没有参数！）  
-  不使用static修饰则表示该方法或成员变量属于单个实例。**static成员不能访问非static成员**
+  不使用static修饰则表示该方法或成员变量属于单个实例。**java中用static修饰的Field可以看成一个全局变量或者方法，作用是在一个类里面实现变量的内容或者方法的共享。static成员不能访问非static成员**
 
 
 
