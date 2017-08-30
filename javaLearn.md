@@ -88,12 +88,12 @@ for(;count<10;){
 -
 数组也是一种类型，它要求数组中所有元素都是相同的类型（基本类型或引用类型都可以）。定义数组：`type[] name`或`type name[]`推荐使用第一种。
 
-**数组初始化：**数组初始化就是为数组 *分配空间* 和 *赋予初始值*，两者 **缺一不可**！初始化分为两种：
+**数组初始化**：数组初始化就是为数组 *分配空间* 和 *赋予初始值*，两者 **缺一不可**！初始化分为两种：
 
 * **静态初始化**：由程序员显示指定初始值`arrayname=new type[]{
  element1,element2,...}`
  
-* **动态初始化：**只指定数组的长度，由系统为每个元素设定初始值`arrayname=new type[3]`
+* **动态初始化**：只指定数组的长度，由系统为每个元素设定初始值`arrayname=new type[3]`
 
 	* byte/short/int/long初始为0
 	* float/double初始为0.0
@@ -164,11 +164,11 @@ b数组长度：4
 * 常见的可以定义3个：构造器、Field(成员变量)、方法。
   * 构造器：创建对象的根本途径，如果不设置java会默认一个构造器。构造器实际上是有返回值的，返回的值就是该类的一个实例。构造器都是通过`new`来调用。
 
-* **修饰符：**`public/protected/private  static final/abstract`,其中`final 和 abstract`互斥，他们可以和`static`组合起来修饰方法。
+* **修饰符**：`public/protected/private  static final/abstract`,其中`final 和 abstract`互斥，他们可以和`static`组合起来修饰方法。
 
 
 
-* **static修饰符：**该关键字可以修饰Field和方法，static修饰的表示它属于这个类本身，而不属于该类的单个实例，例如：`Integer.toString(int a)`,这个toString(int i)方法就是static方法，由该类直接调用而不是Integer类的某一个实例调用。（当然Integer实例也有toString()方法，不过注意：Integer的非static方法没有参数！）  
+* **static修饰符**：该关键字可以修饰Field和方法，static修饰的表示它属于这个类本身，而不属于该类的单个实例，例如：`Integer.toString(int a)`,这个toString(int i)方法就是static方法，由该类直接调用而不是Integer类的某一个实例调用。（当然Integer实例也有toString()方法，不过注意：Integer的非static方法没有参数！）  
   不使用static修饰则表示该方法或成员变量属于单个实例。**java中用static修饰的Field可以看成一个全局变量或者方法，作用是在一个类里面实现变量的内容或者方法的共享。static成员不能访问非static成员**
 
 
@@ -176,7 +176,7 @@ b数组长度：4
 		注意：类的方法和Field都是可以通过类的实例来进行访问的！！！
 
 
-* 对象的**this引用：**this关键字总是指向调用该方法的对象。根据this位置不同，this作为对象的默认引用有两种形式：
+* 对象的**this引用**：this关键字总是指向调用该方法的对象。根据this位置不同，this作为对象的默认引用有两种形式：
   * 构造器中，引用该构造器正在初始化的对象
   * 在方法中，引用调用该方法的对象（主要作用于一个类中两个不同的方法互相使用，this也可以省略）
 `注意：在static修饰的方法中无法使用this关键字，因为static 方法并没有一个确定的实例对象。`
