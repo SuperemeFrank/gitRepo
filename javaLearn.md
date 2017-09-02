@@ -381,4 +381,118 @@ public class SubClass extends BaseClass {
 
 * **多态发生其实也是引用变量的类型转换，总结起来：将子类转换成父类**,`BaseClass bc=new SubClass()` **父类成员变量不变，重叠的方法调用子类的方法；而将父类强制转换成子类**,`SubClass sc=(SubClass)bc`**sc中的变量和方法都来自于子类。**
 
-可以使用`instanceof`判断对象是不是某个类或者这个类的子类，用法：`(testString instanceof String)` ,`instanceof`之前是要判断的对象，之后是判断的类型，正确返回`true`，不正确返回`false`。在这里可以将`instanceof`是一个二元运算符类似`== >`。 在进行qi
+可以使用`instanceof`判断对象是不是某个类或者这个类的子类，用法：`(testString instanceof String)` ,`instanceof`之前是要判断的对象，之后是判断的类型，正确返回`true`，不正确返回`false`。在这里可以将`instanceof`是一个二元运算符类似`== >`。 在进行强制类型转换的时候可以先用这个运算符判断一下。
+
+### 继承与组合
+-
+
+继承带来的高度复用的同时，也破坏了父类的封装性。（子类可以调用父类的Field和方法）因此父类的设计一般遵循如下规则：
+
+* **尽量隐藏父类内部数据。**把所有的Field都设置成private访问类型。
+* **不要让子类随意可以访问、修改父类方法。**父类中仅为辅助作用的工具方法，应该使用private访问类型；如果父类允许被外部类调用的方法，必须用public来修饰，但如果不想让子类重写该方法，则要用final修饰符；如果父类希望某个方法被子类重写，但不希望被其他类自由访问，则可以用protected访问类型。
+* **尽量不要在父类构造器中调用可以被子类重写的方法。**因为这个时候父类构造器在执行时，调用的是子类重写过的方法，原理跟多态类似（实例在调用方法时，如果有重写的方法，使用优先子类的方法！？）。因此可能引发空指针异常（实例自己查）。
+* **如果要把某个类作为最终类（即不能再成为父类），则可以用final来修饰这个类。**如JDK的`java.lang.String`.
+* **子类需要添加额外的属性，而不是仅仅是改变属性的值。**
+* **子类需要添加自己独有的行为方式。**
+
+#### 利用组合实现复用
+
+对于继承而言，子类可以直接获得父类的public方法，程序访问子类从父类那里继承到的方法；而组合则是把旧对象作为新类的Field嵌入，而实现新类的功能，用户看到的都是新类的方法，而不能看到被嵌入对象的方法。实例:
+
+```
+class Aminal{
+	private void beat(){
+		...
+	}
+	public void breathe(){
+		beat();
+	}
+}
+class Bird{
+	//将原来的Aminal嵌入Bird 类，作为Bird的一部分。
+	private Aminal a;
+	//重新定义Bird的构造器
+	public Bird(Animal a){
+		this.a=a
+	}
+	//重新定义一个breathe方法
+	public void breathe(){
+	//直接复用Animal的breathe方法来实现Bird的breathe方法
+	a.breathe();
+	}
+	//Bird类自己的方法
+	public void fly(){
+	...
+	}
+}
+```
+
+### 初始化块
+-
+
+初始化块是java类里可以出现的第四种成员（Filed,方法，构造器），一个类里面可以有多个初始化块，执行顺序从上到下。语法格式如下：
+
+```
+[修饰符]{
+	...//初始化块可执行代码
+}
+```
+
+**初始化模块总是在构造器之前执行,即使初始化模块代码在构造器后面。**
+
+用`static`修饰的初始化块叫做**静态初始化块**，静态初始化块的好处是在类被加载时就直接调用了，而不是如普通初始化块要等到实例被创建时才调用。此外要注意的是：**静态块同样只能初始化static修饰的Field，不能访问非静态Field。**
+
+**无论是初始化模块还是构造器，在创建实例的时候都会先运行追溯到类最顶层的构造器和初始化模块。**
+
+JVM在**第一次**主动使用一个类的时候，在**加载**时会在**准备阶段**为类的静态Field分配内存；在**初始化阶段**则初始化这些静态Field。
+
+### final
+-
+
+`final`关键字用来修饰**方法、类、Field**，用`final`修饰的**变量**不允许被**重新赋值**，修饰的**方法**不允许被**子类覆盖**，修饰的**类**不允许派生**子类**。
+
+### 包装类
+-
+
+**来源：**java提供了8种基本数据类型，但是基本数据类型不具备“对象”的特征：没有Field、方法可以被调用。因此，所有引用变量都可以当做Object 变量来使用，但是基本数据类型的变量就不可以，因此为了解决这个问题，java提供了包装类（Wrapper Class）的概念。
+
+8个基本数据类型对应的包装类：
+
+基本数据类型| 包装类
+----------|------
+byte		| Byte
+short     | Short
+int       | Integer
+long      | Long
+char      | Charactor
+float     | Float
+double    | Double
+boolean   | Boolean
+
+八个基本数据类型可以直接传入参数来进行包装，也可以通过字符串来进行包装（除了Charactor类）。实例如下：
+
+```
+{
+//通过传入对应的参数来包装
+boolean b1=true;
+Boolean B1Obj=new Boolean(b1);
+int it=5;
+Integer itObj=new Integer(it);
+//通过字符串来包装
+Float f1=new Float("5.45");
+Boolean c1=new Boolean("false");
+}
+```
+
+**当使用字符串来创建包装类时，如果字符串不能成功转换成对应的基本类型变量，则编译会通过，但会出现**`java.lang.NumberFormatException`**异常。对Boolean对象来说，传入除了"true"和"True"之外的字符串都会变成"false"。**
+
+要获得包装类中的基本数据类型，则可以用包装类的`XXXVlue()`实例方法：
+
+```
+boolean b1=b1Obj.booleanValue();
+int it=itObj.intValue();
+
+```
+
+
+
