@@ -824,4 +824,42 @@ new 父类构造器（实参列表）|实现接口（）{
 ### 枚举类
 -
 
+背景：在某些情况下，一个类的对象是有限而且固定的，如季节类，只有四个对象。这种类就是枚举类。
+下面是定义的一个Season枚举类：
 
+```
+public class Season {
+	//每个季节实例name和desc不可变，因此用final修饰
+	private final String name;
+	private final String desc;
+	//直接在内部调用构造器
+	public static final Season SPRING=new Season("春天","踏青")；
+	public static final Season SUMMER=new Season("夏天","炎热")；
+	public static final Season WINTER=new Season("冬天","寒冷")；
+	public static final Season FALL=new Season("秋天","落叶");
+	public static Season getSeason(int getnum){
+		switch(getnum){
+			case 1:
+				return SPRING;
+			case 2:
+				return SUMMER;
+			case 3:
+				return WINTER;
+			case 4:
+				return FALL;
+			default:
+				return NULL;
+		}
+	}
+	private Season(String name, String desc){
+		this.name=name;
+		this.desc=desc;
+	}
+	public String getName(){
+		return name;
+	}
+	public String getDesc(){
+		return desc;
+	}
+}
+```
