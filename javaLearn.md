@@ -469,7 +469,10 @@ public void test(){
 
 **当用`final`修饰引用变量时**：其本质只是保证这个变量引用的地址不会发生改变，而这个变量的内容是可以发生改变的。这个概念与final修饰的基本数据类型有所出入，但实质其实是一样的，因为引用变量本身也就是一个地址。
 
-**`final`修饰符的一个重要作用就是定义“宏变量”（即直接量）**,final变量（非局部）的初始值在编译时期就能确定下来，这个final变量本质上就是一个宏变量，编译器会把任何用到这个变量的地方直接替换成该变量的值。**对于final实例变量来说，只有在声明时直接赋值才会有宏变量的效果。**
+**`final`修饰符的一个重要作用就是定义“宏变量”（即直接量）**,f
+
+
+inal变量（非局部）的初始值在编译时期就能确定下来，这个final变量本质上就是一个宏变量，编译器会把任何用到这个变量的地方直接替换成该变量的值。**对于final实例变量来说，只有在声明时直接赋值才会有宏变量的效果。**
 
 ### 不可变类
 -
@@ -481,7 +484,7 @@ public void test(){
 1. 使用private和final修饰符来修饰该类的Field
 2. 提供带参构造器，用于根据传入参数来初始化Field
 3. 仅为该类提供`getter()`方法，不要提供`setter()`方法，因为普通方法无法修改final修饰的Field
-4. 有必要的话重写`equal()`和`hashcode()`方法
+4. 有必要的话重写`equals()`和`hashcode()`方法
 
 来个例子：
 
@@ -921,7 +924,7 @@ JAR包好处：
 
 ## 与运行环境交互
 ---
-### 与用户交互
+### 与用户交互的类
 -
 
 大部分程序都涉及到与用户交互，包括键盘、鼠标的输入，以及图形界面的接口（GUI）。
@@ -948,6 +951,203 @@ Scanner类是java.util.Scanner下的，它可以很方便的一个基于正则�
 * `hasNextLine()`:下一列
 * `nextLine()`:同理
 
+### 系统相关类
+-
 
+Java提供System和Runtime类来与运行平台（系统）进行交互。
 
-	
+#### System类
+
+System类代表当前Java程序的运行平台，程序不能创建System类实例，System类提供一些类Field和类方法。
+
+**System类提供了代表标准输入、标准输出和错误输出的类Field。并提供了访问环境变量、系统属性、加载文件和动态链接的静态方法**。`System.in`标准输入（通常是键盘）、`System.out`标准输出（通常是显示器）、`System.err`错误输出流，并提供了setIn、setOut、setErr方法来改变标准流。
+
+#### Runtime类
+
+Runtime类代表的是程序的运行时环境，内个Java程序都有一个与之对应的Runtime实例，程序不能创建Runtime实例，但是可以通过`getRuntime()`方法获取当前的实例。**Runtime可以访问JVM的相关信息，如内存、处理器数量等。**
+
+==### 常用类==
+-
+
+#### Object类
+
+Object类是所有类、数组的父类，因此允许把任何类型的对象赋值给Object类型的变量。**当一个类没有显示定义父类，就默认继承Object类。**
+
+常用的Object对象方法：
+
+* boolean equals（Object obj），判断是否是同一个对象。这个基本没有实用价值，还不如`==`,很多对象中equals方法都会被重写，如String方法，重写后只是比较内容是否相等，不在乎是否同对象。
+* protected void finalize(), 垃圾回收，不能直接调用。
+* Class<?> getClass(),返回对象的运行时类。
+* int hashCoed(),返回对象hash值，该值由对象地址算出。
+* String toString(),返回对象的字符串表示。当用**`System.out.println()`**或者把**对象与字符串做连接运算**时会自动调用。
+* 此外还有`wait(),notify(),notifyAll()`等方法，来控制线程
+* clone()方法，只是简单复制实例的基本变量，引用变量的复制依旧指向的是同一个地址，因此clone方法实现的只是“简单”复制。
+
+#### Objects类
+
+Java7 新的工具类，主要是对于空指针安全的。当变量为空指针时，Object的toString方法将报错，而Objects.toString则会输出null。此外Objects还提供了判断是否为空指针的方法。
+
+#### String、StringBuffer、StringBuilder类
+
+**String类**是不可变类，String对象内部字符序列不可改变。
+**StringBuffer类**是可变类，提供了append(),insert()等方法改变字符串序列，生成期望的字符串后直接用toString()方法转换成String。
+**StringBuilder**与StringBuffer类似，后者是线程安全的，前者没有，因此前者性能略高一些。优先考虑使用StringBuilder。
+
+#### Math类
+
+用于更复杂计算的一个类，构造器为private。
+
+#### ThreadLocalRandom与Random类
+
+Random是生成伪随机数的一个工具类，ThreadLocalRandom在多线程并行环境下比Random效率更高。用法都相似，创建一个对象之后用`nextXxx()`方法产生不同类型的随机数。
+
+创建对象的时候有种子这个东西，即`Random r=new Random(1)`,1就是种子，相同种子的两个Random对象以同样的顺序调用方法产生的结果是一样的。当没有种子的时候则种子是随机的。
+
+#### BigDecimal类
+
+用于更精确计算浮点数。
+
+### 处理日期的类
+-
+
+#### Date类
+
+Java1开始出现的老类，不适用了，对日期时间处理用Calendar类。
+
+#### Calendar类
+
+Calendar类本身是一个抽象的类，因为记时间的方式太多，所以Calendar类成为了日期的模板，不能直接用new创建对象。（但是可以用`Calendar.getInstance()`创建一个默认的对象）。
+
+Date类和Calendar类都是表示日期的工具，可以互相转换。
+
+注意：add和roll有所不同，两者都是改变某一个field上的值，但是roll改变值超过其限定后，其更大的值不会改变，add则会改变。（例如：8月31日，add(DAY,3)就变成9月3日；roll(DAY,3)则是8月3日）。
+
+Calendar.MONTH是从0开始，其他都是从1开始。所有field(年（YEAR）、月(MONTH)、日（DAY））都可以通过静态访问。
+
+setLenient()方法来改变容错性，默认开启。关闭则不允许设置参数超过限定值。
+
+**set方法延迟修改：**set(filed,VALUE)修改，field值会修改，但是Calendar所代表的时间不会立即修改（也就是day因为月份不同超出限定不会立即被计算），直到下次调用get()、set()等才会重新计算Calendar时间。这是为了防止多次set造成不必要的计算。
+
+#### TimeZone类
+
+地球被划分为24个时区，TimeZonw就代表了时区。
+
+TimeZone是一个**抽象类**，可以用静态方法getDefault()和getTimeZone()得到TimeZone实例，前者获得机器上默认的时区，后者根据时区的ID获取对应的时区。
+
+==### 正则表达式==
+-
+
+![Zhengze_1.png](graphs/Zhengze_1.png)
+
+上述为一些合法的字符，有一些特殊的字符有特殊的含义，需要用这些字符则需要转义：
+
+![Zhengze_2.png](graphs/Zhengze_2.png)
+
+通配符可以匹配多个字符的特殊字符：
+
+![Zhengze_3.png](graphs/Zhengze_3.png)
+
+方括号表达式：
+
+![Zhengze_4.png](graphs/Zhengze_4.png)
+
+边界标识符：
+
+![Zhengze_5.png](graphs/Zhengze_5.png)
+
+三种模式:
+
+==**Greedy（贪婪模式）：**==数量标识符默认采用贪婪模式，贪婪模式会一直匹配到无法匹配为止。
+
+==**Reluctant(勉强模式)：**==用问号（？）后缀表示，它只会匹配最少的字符。
+
+==**Possesive（占有模式）：**==用加号（+）后缀表示，目前只有Java支持。
+
+![Zhengze_6.png](graphs/Zhengze_6.png)
+
+#### 使用正则表达式
+
+一旦定义了正则表达式，则可以使用Pattern和Matcher对象来使用。
+
+Pattern对象是正则表达式在内存中的表现形式，因此正则表达式需要**先被编译为Pattern对象**，然后利用该对象**创建对应的Matcher对象**，执行匹配涉及到的方法在Matcher中。
+典型顺序：
+
+```
+//将一个字符串编译成Pattern对象
+Pattern p=Pattern.compile("a*b");
+//使用Pattern创建Matcher对象
+Mathcer m=p.Matcher("aaabbbb");
+boolean b=m,matches();//返回true
+```
+
+如果只使用一次匹配则`Pattern.Matcher("a*b","aaaaabbb")`等效前面三句。
+
+**Pattern是不可变类，因此多个并发线程可以安全使用。**
+
+## Java集合
+---
+
+Java集合类是用于存储数量不等的多个对象，可以实现常用的数据结构，如栈、队列等。并且Java集合还可以保存具有映射关系的关联数组。Java集合大致分为Set、List、Map三大体系（它们都是接口），**Set代表无序、不可重复的集合**；**List代表有序、可以重复的集合**；**Map代表具有映射关系的集合**。Java 5之后多了一种**Queue代表队列关系的集合。**
+
+### Java集合综述
+--
+
+集合是用来保存**数量可变的对象**，因为数组初始化之后长度就固定了，因此集合也被称为==**容器类**==。
+
+**集合只能保存对象不能保存基本数据类型。（实际上的引用变量，习惯上称对象）**
+
+集合主要由**==Collection==**和**==Map==**两个接口派生而成，其中**Collection**派生**Set、Queue、List**，**Map**派生**Map**。
+
+**Map**保存的每一项数据都是`key-value`对，key值是不可重复的，通常根据key值查询其对应value。
+
+Set集合像一个罐子，放入的对象无法记住其顺序；List集合非常像一个数组，它可以记住每次添加对象的顺序；Map也像一个罐子，不能记住顺序，但里面保存的都是key-value对：
+
+![ThreeSets.png](graphs/ThreeSets.png)
+
+### Collection和Iterator接口
+-
+
+Collection接口作为3个集合接口的父接口，定义了如下操作集合方法：
+
+* boolean add(Object o)
+* boolean addAll(Collection c) 将一个集合c添加到指定集合
+* void clear() 清楚集合所有元素
+* boolean contains(Object o) 返回集合中是否包含指定集合
+* boolean containsAll(Collection c)
+* boolean isEmpty()
+* Interator iterator() 返回一个Iterator对象，用于变量集合元素
+* boolean remove(Object o) 删除指定对象，多个会一起删除
+* boolean removeAll(Coleection c)
+* Object[] toArray() 将集合转换成一个数组
+
+实例代码：
+
+```
+import java.util.*;
+public class RandomTest {
+	public static void main(String[] args) {
+	//create a Set with ArrayList type
+	Collection c=new ArrayList();
+	//add element
+	c.add("Frank");
+	c.add("Esther");
+	c.add("Father");
+	c.remove("Esther");
+	Collection b=new HashSet();
+	b.add("Frank");
+	b.add("Mum");
+	//make an subrection operation
+	c.removeAll(b);
+	System.out.println("what remains in c :"+c);
+	b.retainAll(c);
+	System.out.println("what remains in b :"+b);
+
+	}
+}
+
+```
+
+**其中c的实现类是ArrayList，b的实现类是HashSet，把他们都当成Collection使用时，使用add等操作没有任何区别。**
+
+**所有Collection类都==重写了toString方法==，所以可以直接把集合内容输出出来。**
+
