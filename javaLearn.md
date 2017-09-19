@@ -41,7 +41,7 @@ java支持数据类型分为两类：
 
 ### 基本类型转换
 -
-#### 自动类型转换
+#### ==自动类型转换==
 
 java中基本类型的自动转化图如下：
 
@@ -49,7 +49,7 @@ java中基本类型的自动转化图如下：
 
 	注意：当将任何基本类型的与字符串进行连接运算时，基本类型值将自动转换为字符串类型。
 
-#### 强制类型转换
+#### ==强制类型转换==
 
 强制类型转换就是上图的逆转换，因此必须要强制转换。用法:`targetType value1=(targetType)value2`
 
@@ -60,7 +60,7 @@ String a="45";
 int iValue=Integer.parseInt(a);
 
 ```
-#### 表达式类型自动提升
+#### ==表达式类型自动提升==
 
 当一个表达式包含多个基本类型时，**整个表达式的数据类型将自动提升为最高等级的数据类型**。除法亦然，如果最高等级是int，除出来有小数则小数部分自动被去除。
 
@@ -228,7 +228,7 @@ java中确定一个方法有三个要素：
 
 ### 封装和隐藏
 -
-#### 封装
+#### ==封装==
 
 面向对象的三大特性之一（+继承和多态），封装指**将对象的状态信息隐藏在内部，不允许外部程序直接访问对象内部信息，只能通过对象所提供的方法来实现对对象内部信息的访问和操作**。
 
@@ -243,7 +243,7 @@ java中确定一个方法有三个要素：
 
 实现方法：java访问控制符
 
-#### 访问控制符
+#### ==访问控制符==
 
 三个控制符：private public protected, 以及不加任何符号的控制级别，一共4个级别，由小到大为：
 `privrate-->default-->protected-->public`
@@ -258,7 +258,7 @@ java中确定一个方法有三个要素：
 全局范围类|         |        |            |  ✔️
 
 
-#### package、import、import static
+#### ==package、import、import static==
 
 * java 包机制必须满足两点：①源文件使用package指定包名  ②class文件必须放在对应的路径下
 
@@ -284,32 +284,32 @@ java中确定一个方法有三个要素：
  * “一大”：子类方法的访问权限应该比父类大或者相等
 * 覆盖方法必须是相同的`static`状态   
 
-#### super限定
+#### ==super限定==
 
 当子类覆盖了父类的方法时，使用`super`限定任然可以调用父类实例的方法。`super`也可调用父类的Field。也就是说在子类里面有和父类同名且同参数列表的方法或者同名的Field的话都会发生覆盖，想要访问父类的话就需要用`super`。
 
 `注意：super与this 一样不能出现在static修饰的方法中，他们针对的都是实例对象而不是类。`
 
-#### this与super
+#### ==this与super==
 
 在Java中`this`与`super`的用法是非常相像的：  
 	①他们都是针对对象而不针对类  
 	②`this`是针对类之间方法的互相调用，`super`是用于子类调用父类方法。  
 	③`this`用于同一个类中方法局部变量和类Field重载的调用，`super`用于子类和父类中Field重写的调用。
 
-#### 重载和重写区别
+#### ==重载和重写区别==
 
 重载(overload)和重写(override)的区别在于：重载发生在同一个类多个同名方法之间，而重写发生在父类和子类同名方法之间，两者本身不具有太多的可比性。
 
 	注意：子类和父类之间也可能发生重载，如果子类中定义了一个和父类方法名相同，但是参数列表不同的方法就会发生重载
 
-#### 系统查找子类方法中 a 的顺序
+#### ==系统查找子类方法中 a 的顺序==
 
 （1）查找该方法中是否有名为a的局部变量  
 （2）查找当前类中是否有名为a的Field  
 （3）查找该子类直接父类中是否有名为a的Field，依次上溯所有父类，没找到报错
 
-#### 调用父类构造器
+#### ==调用父类构造器==
 
 方法与在一个类中构造器之间互相调用是一个道理，只是同一个类中构造器互相调用用`this()`，而在子类构造器（只有在子类构造器中才能调用父类构造器）中调用父类构造器则用`super()`。
 	
@@ -395,7 +395,7 @@ public class SubClass extends BaseClass {
 * **子类需要添加额外的属性，而不是仅仅是改变属性的值。**
 * **子类需要添加自己独有的行为方式。**
 
-#### 利用组合实现复用
+#### ==利用组合实现复用==
 
 对于继承而言，子类可以直接获得父类的public方法，程序访问子类从父类那里继承到的方法；而组合则是把旧对象作为新类的Field嵌入，而实现新类的功能，用户看到的都是新类的方法，而不能看到被嵌入对象的方法。实例:
 
@@ -597,15 +597,15 @@ if(aInte>=3){
 -
 Java对象都死Object类的实例，都可以调用Object类的方法，这些方法提供了处理Java对象的通用方法。
 
-#### 打印对象和toString方法。
+#### ==打印对象和toString方法。==
 
 `toString()`方法是Object类的一个方法，其功能是：打印一个对象时，输出该对象的“描述信息”，默认是（类名+@+hashCode）。**当java对象和字符串做连接运算时，java会自动为对象使用toString()方法。**
 
-#### `==`和equal方法
+#### ==`==`和equal方法==
 
 基本数据类型之间可以通过`==`来进行比较判断是否相等，但是对象之间用`==`则只是判断这个引用变量的指向的内存地址是否一样，而不是判断其中的值是否一样。
 
-#### 常量池（Constant Pool）
+#### ==常量池（Constant Pool）==
 
 **常量池**专门用于管理在编译期被确定并保存在一边以的.class文件中的一些数据。它包含了关于类、方法、接口中的常量，也包含字符串的常量。
 
@@ -635,13 +635,13 @@ Java对象都死Object类的实例，都可以调用Object类的方法，这些�
 1. 常量池中所有字符串常量被合并，只占用一个空间。
 2. 比较**字符串**时，==比equal()快。对于两个引用变量来说，用==可以判断指向地址是否相等，如不相等可能再用equal去判断值是否相等。
 
-#### 类成员
+#### ==类成员==
 
 `static`修饰的成员就是类成员，类成员可以使Field、方法、初始化模块、内部类（接口、枚举）。`static`不能修饰构造器。
 
 **重要规则**：类成员不能访问实例成员。
 
-#### 单例类
+#### ==单例类==
 
 针对需求：一个类只允许有一个实例创建。
 
@@ -743,7 +743,7 @@ abstract class Shape{
 
 **类继承一个接口与继承一个抽象类同理，必须实现所有抽象方法，否则就定义为抽象类。实现接口的抽象方法时，方法必须是public，因为子类重写访问必须相等或更大。**
 
-#### 接口和抽象类
+#### ==接口和抽象类==
 
 接口和抽象类都有以下特征：
 
@@ -884,7 +884,7 @@ public class Season {
 
 ![objectStatusTransfer](graphs/objectStatusTransfer.png)
 
-#### 强制垃圾回收
+#### ==强制垃圾回收==
 
 两个方法：
 
@@ -900,7 +900,7 @@ public class Season {
 * JVM执行finalize时，可能使对象重新变成可达状态
 * JVM执行finalize出错不会影响程序继续执行
 
-#### 对象的软引用、弱引用、虚引用
+#### ==对象的软引用、弱引用、虚引用==
 
 1. **强引用（StringReference）**:最常见的方式，默认都是强引用。对象被一个或一个以上强引用时处于可达状态。
 2. **软引用（SoftReference）**:通过SoftReference类实现，当对象只有软引用时，如果内存不足，对象可能会被回收。
@@ -929,7 +929,7 @@ JAR包好处：
 
 大部分程序都涉及到与用户交互，包括键盘、鼠标的输入，以及图形界面的接口（GUI）。
 
-#### 运行java程序的参数
+#### ==运行java程序的参数==
 
 main方法的方法签名：
 
@@ -940,7 +940,7 @@ main方法的方法签名：
 **void返回值**：因为方法由JVM调用，返回任何值给JVM没有意义，所以用void修饰。
 **字符串形参**：java是谁调用方法，谁负责为形参赋值。因此args参数由JVM赋值。
 
-#### 使用Scanner获得键盘输入
+#### ==使用Scanner获得键盘输入==
 
 Scanner类是java.util.Scanner下的，它可以很方便的一个基于正则表达式的文本扫描器，它可以从文件、输入流、字符串中很方便地解析出基本数字类型和字符串类型。
 
@@ -951,25 +951,25 @@ Scanner类是java.util.Scanner下的，它可以很方便的一个基于正则�
 * `hasNextLine()`:下一列
 * `nextLine()`:同理
 
-### 系统相关类
+### ==系统相关类==
 -
 
 Java提供System和Runtime类来与运行平台（系统）进行交互。
 
-#### System类
+#### ==System类==
 
 System类代表当前Java程序的运行平台，程序不能创建System类实例，System类提供一些类Field和类方法。
 
 **System类提供了代表标准输入、标准输出和错误输出的类Field。并提供了访问环境变量、系统属性、加载文件和动态链接的静态方法**。`System.in`标准输入（通常是键盘）、`System.out`标准输出（通常是显示器）、`System.err`错误输出流，并提供了setIn、setOut、setErr方法来改变标准流。
 
-#### Runtime类
+#### ==Runtime类==
 
 Runtime类代表的是程序的运行时环境，内个Java程序都有一个与之对应的Runtime实例，程序不能创建Runtime实例，但是可以通过`getRuntime()`方法获取当前的实例。**Runtime可以访问JVM的相关信息，如内存、处理器数量等。**
 
-==### 常用类==
+### 常用类
 -
 
-#### Object类
+#### ==Object类==
 
 Object类是所有类、数组的父类，因此允许把任何类型的对象赋值给Object类型的变量。**当一个类没有显示定义父类，就默认继承Object类。**
 
@@ -983,38 +983,38 @@ Object类是所有类、数组的父类，因此允许把任何类型的对象�
 * 此外还有`wait(),notify(),notifyAll()`等方法，来控制线程
 * clone()方法，只是简单复制实例的基本变量，引用变量的复制依旧指向的是同一个地址，因此clone方法实现的只是“简单”复制。
 
-#### Objects类
+#### ==Objects类==
 
 Java7 新的工具类，主要是对于空指针安全的。当变量为空指针时，Object的toString方法将报错，而Objects.toString则会输出null。此外Objects还提供了判断是否为空指针的方法。
 
-#### String、StringBuffer、StringBuilder类
+#### ==String、StringBuffer、StringBuilder类==
 
 **String类**是不可变类，String对象内部字符序列不可改变。
 **StringBuffer类**是可变类，提供了append(),insert()等方法改变字符串序列，生成期望的字符串后直接用toString()方法转换成String。
 **StringBuilder**与StringBuffer类似，后者是线程安全的，前者没有，因此前者性能略高一些。优先考虑使用StringBuilder。
 
-#### Math类
+#### ==Math类==
 
 用于更复杂计算的一个类，构造器为private。
 
-#### ThreadLocalRandom与Random类
+#### ==ThreadLocalRandom与Random类==
 
 Random是生成伪随机数的一个工具类，ThreadLocalRandom在多线程并行环境下比Random效率更高。用法都相似，创建一个对象之后用`nextXxx()`方法产生不同类型的随机数。
 
 创建对象的时候有种子这个东西，即`Random r=new Random(1)`,1就是种子，相同种子的两个Random对象以同样的顺序调用方法产生的结果是一样的。当没有种子的时候则种子是随机的。
 
-#### BigDecimal类
+#### ==BigDecimal类==
 
 用于更精确计算浮点数。
 
 ### 处理日期的类
 -
 
-#### Date类
+#### ==Date类==
 
 Java1开始出现的老类，不适用了，对日期时间处理用Calendar类。
 
-#### Calendar类
+#### ==Calendar类==
 
 Calendar类本身是一个抽象的类，因为记时间的方式太多，所以Calendar类成为了日期的模板，不能直接用new创建对象。（但是可以用`Calendar.getInstance()`创建一个默认的对象）。
 
@@ -1028,13 +1028,13 @@ setLenient()方法来改变容错性，默认开启。关闭则不允许设置�
 
 **set方法延迟修改：**set(filed,VALUE)修改，field值会修改，但是Calendar所代表的时间不会立即修改（也就是day因为月份不同超出限定不会立即被计算），直到下次调用get()、set()等才会重新计算Calendar时间。这是为了防止多次set造成不必要的计算。
 
-#### TimeZone类
+#### ==TimeZone类==
 
 地球被划分为24个时区，TimeZonw就代表了时区。
 
 TimeZone是一个**抽象类**，可以用静态方法getDefault()和getTimeZone()得到TimeZone实例，前者获得机器上默认的时区，后者根据时区的ID获取对应的时区。
 
-==### 正则表达式==
+### 正则表达式
 -
 
 ![Zhengze_1.png](graphs/Zhengze_1.png)
@@ -1065,7 +1065,7 @@ TimeZone是一个**抽象类**，可以用静态方法getDefault()和getTimeZone
 
 ![Zhengze_6.png](graphs/Zhengze_6.png)
 
-#### 使用正则表达式
+#### ==使用正则表达式==
 
 一旦定义了正则表达式，则可以使用Pattern和Matcher对象来使用。
 
@@ -1151,7 +1151,7 @@ public class RandomTest {
 
 所有Collection类都==重写了toString方法==，所以可以直接把集合内容输出出来。
 
-#### 使用Iterator接口遍历集合元素
+#### ==使用Iterator接口遍历集合元素==
 
 Iterator也是Java集合框架成员，但他与Collection系列、Map系列集合不一样，Iterator主要用于遍历Collection集合中的元素，Iterator对象又叫**==迭代器==**。
 
@@ -1220,7 +1220,7 @@ public class RandomTest {
 
 **Iterator**采用的是`fail-fast`机制，一旦在迭代过程中检测到该集合已经被其他线程修改，则抛出异常。这可以避免共享资源引发的潜在问题。
 
-#### 使用foreach遍历集合
+#### ==使用foreach遍历集合==
 
 代码：
 
@@ -1252,7 +1252,7 @@ public class RandomTest {
 
 **Set**其实跟**Collection**基本一致，只是不能包含重复的元素。Set集合判断元素一致是不是根据`==`而是根据`equals`。
 
-#### HashSet类
+#### ==HashSet类==
 
 HashSet是Set接口的典型实现，按hash算法来存储集合中的元素，具有较好的管理性。
 
@@ -1268,19 +1268,19 @@ HashSet具有以下特点：
 * 两个对象equals返回true时，hashCode返回值也应该相等
 * 对象中用作equals比较对象的标准都应该用到hashCode中
 
-#### LinkedHashSet类
+#### ==LinkedHashSet类==
 
 HashSet的子类，会按照插入顺序来访问集合中的元素，性能略低于HashCode。
 
-#### TreeSet类
+#### ==TreeSet类==
 
 SortSet接口的实现类，增加了访问第一个、前一个、后一个、最后一个元素的方法，整个排序看成树状结构。
 
-#### EnumSet类
+#### ==EnumSet类==
 
 专为枚举类设计的集合类，所有元素都必须是指定枚举类型的枚举值。
 
-#### Set实现类的性能分析
+#### ==Set实现类的性能分析==
 
 HashSet和TreeSet是两个典型的Set集合实现，**HashSet性能总是比TreeSet好**，因为TreeSet需要用红黑树算法维护排序。当需要一个有次序的Set的时候才需要用到TreeSet。LinkedHashSet普通的插入删除操作要比HashSet慢，因为要维护链接次序，但是在遍历上面性能比HashSet高。
 
@@ -1291,7 +1291,7 @@ HashSet和TreeSet是两个典型的Set集合实现，**HashSet性能总是比Tre
 
 List集合代表一个**有序、可重复**的集合。索引从0开始。
 
-#### List接口和ListIterator接口
+#### ==List接口和ListIterator接口==
 
 List继承Collection接口，并提供了一些操作方法：
 
@@ -1314,7 +1314,7 @@ set方法不能改变List长度。
 * Object previous() 返回上一个元素
 * void add()在指定位置插入
 
-#### ArrayList和Vector实现类
+#### ==ArrayList和Vector实现类==
 
 作为List接口两个典型实现类，完全实现前面List所有方法。**它们封装了一个动态的、允许再分配的Object[]数组，使用initialCapacity参数来设置数组长度，当超过长度时会自动增加。**
 
@@ -1326,6 +1326,10 @@ set方法不能改变List长度。
 Vector是一个老的集合，跟**ArrayList在用法上几乎一样**。不过Vector是线程安全的，ArrayList是线程不安全的，因此ArrayList在效率上比Vector要高。
 
 Vector还有一个Stack子类，用于模拟栈，使用“后进先出（LIFO）”。
+
+#### ==LinkedList==
+
+**List接口的实现类，可以根据索引随机访问集合元素，同时还实现了Deque接口，这意味着可以当成Deque来使用，因此也可以当成栈或者队列使用。**
 
 ### Queue集合
 -
@@ -1341,7 +1345,7 @@ Queue接口定义以下方法：
 * Object poll()获取头部元素，并且删除该元素，空返回null
 * Object remove()获取头部并删除
 
-#### PriorityQueue实现类
+#### ==PriorityQueue实现类==
 
 这个类是一个比较标准的队列，但不是绝对标准，因为它会重新进行排序，排序顺序是按照元素的大小。
 
@@ -1350,7 +1354,7 @@ Queue接口定义以下方法：
 * **自然排序：**集合中的元素必须实现了Comparable接口，并且是同一个类的多个实例，否则可能造成错误
 * **定制排序：**创建队列是，传入一个Comparator对象，该对象负责对队列中所有元素进行排序。元素不要求实现Comparable接口。
 
-#### Deque接口与ArrayDeque实现类
+#### ==Deque接口与ArrayDeque实现类==
 
 **Deque是Queue接口的子接口，代表一个双端队列，其中定义了以下双端队列方法：**
 
@@ -1372,7 +1376,9 @@ Queue接口定义以下方法：
 * Object removeLastOccurrence(Object o)
 * void removeLast()
 
-**可以看出Deque不仅可以当队列使用，也可以当栈来使用。**
+**可以看出Deque不仅可以当队列使用，也可以当栈来使用。它的性能比Stack更好，因此要使用栈这种结构推荐ArrayDeque或者LinkedList。**
+
+
 
 
 
