@@ -1149,5 +1149,231 @@ public class RandomTest {
 
 **其中c的实现类是ArrayList，b的实现类是HashSet，把他们都当成Collection使用时，使用add等操作没有任何区别。**
 
-**所有Collection类都==重写了toString方法==，所以可以直接把集合内容输出出来。**
+所有Collection类都==重写了toString方法==，所以可以直接把集合内容输出出来。
+
+#### 使用Iterator接口遍历集合元素
+
+Iterator也是Java集合框架成员，但他与Collection系列、Map系列集合不一样，Iterator主要用于遍历Collection集合中的元素，Iterator对象又叫**==迭代器==**。
+
+Iterator接口定义了如下三个方法：
+* boolean hasNext();
+* Object next();
+* void remove(); 删除集合里上一次返回的元素
+
+```
+import java.util.*;
+public class RandomTest {
+	public static void main(String[] args) {
+		Collection b=new HashSet();
+		b.add("first book");
+		b.add("second book");
+		b.add("third book");
+		//create an Interator
+		Iterator i=b.iterator();
+		//if the Collection has next element
+		while(i.hasNext()){
+			//print next element
+			System.out.println(i.next());
+		}
+	}
+}
+
+```
+**Iterator**是一个接口，因此要创建Iterator类型对象**不可以直接创建**。Iterator变量就像C里面的不可回溯的指针，每次next()之后都会指向集合中的下一个元素，并且不可逆转。可以通过Interator来对集合中的元素进行修改，不过得先转型,然后进行修改。
+
+代码：
+
+```
+import java.util.*;
+class SubClass{
+	private int a;
+	public SubClass(int a){
+		this.a=a;
+	}
+	public void setA(int a){
+		this.a=a;
+	}
+	public int getA(){
+		return this.a;
+	}
+}
+public class RandomTest {
+	public static void main(String[] args) {
+		Collection b=new HashSet();
+		b.add(new SubClass(1));
+		b.add(new SubClass(2));
+		b.add(new SubClass(3));
+		//create an Interator
+		Iterator i=b.iterator();
+		SubClass s=(SubClass)i.next();
+		System.out.println(s.getA());
+		//change the element
+		s.setA(3);
+		//start a new Iterator to access the first element
+		Iterator n=b.iterator();
+		SubClass d=(SubClass)i.next();
+		//print 3, the element in Collection has been changed
+		System.out.println(d.getA());
+	}
+}
+```
+
+**Iterator**采用的是`fail-fast`机制，一旦在迭代过程中检测到该集合已经被其他线程修改，则抛出异常。这可以避免共享资源引发的潜在问题。
+
+#### 使用foreach遍历集合
+
+代码：
+
+```
+public class RandomTest {
+	public static void main(String[] args) {
+		Collection b=new HashSet();
+		b.add(new SubClass(1));
+		b.add(new SubClass(2));
+		b.add(new SubClass(3));
+		for(Object k:b){
+			SubClass book=(SubClass)k;
+			book.setA(1);
+		}
+		//books has been changed
+		for(Object m:b){
+			SubClass bok=(SubClass)m;
+			System.out.println(bok.getA());
+		}
+	}
+}
+```
+==**【重要】**==：遍历的时候是否会修改原来的元素取决于访问的变量类型。如果是**引用变量（除String外）**则通过以上方式原来的元素是**会发生改变的**；如果是**基本数据类型以及String类型的话是不会改变的**，这是因为基本数据类型和String类型都是不可变数据类型，它们都在常量池中，因此会为他们创建一个新的数据。
+
+**在迭代访问的过程中，集合中某个元素的内容可以发生改变，但是对于集合不能改变（也就是不能增减元素等）。**
+
+### Set集合
+-
+
+**Set**其实跟**Collection**基本一致，只是不能包含重复的元素。Set集合判断元素一致是不是根据`==`而是根据`equals`。
+
+#### HashSet类
+
+HashSet是Set接口的典型实现，按hash算法来存储集合中的元素，具有较好的管理性。
+
+HashSet具有以下特点：
+
+* 不能保证元素排列顺序，顺序可能变化
+* 不是同步的，如果多个线程同时访问一个HashSet，则必须在代码上保证同步
+* 集合元素值可以使null
+
+【注意】：虽然是通过equals方法来比较是否相同，但是同时还需要hashcode()计算出来的值相同。hashCode方法对于HashSet很重要，如果要重写hashCode方法需要注意以下几点：
+
+* 运行过程中，同一个对象多次调用hashCode返回值应该相同
+* 两个对象equals返回true时，hashCode返回值也应该相等
+* 对象中用作equals比较对象的标准都应该用到hashCode中
+
+#### LinkedHashSet类
+
+HashSet的子类，会按照插入顺序来访问集合中的元素，性能略低于HashCode。
+
+#### TreeSet类
+
+SortSet接口的实现类，增加了访问第一个、前一个、后一个、最后一个元素的方法，整个排序看成树状结构。
+
+#### EnumSet类
+
+专为枚举类设计的集合类，所有元素都必须是指定枚举类型的枚举值。
+
+#### Set实现类的性能分析
+
+HashSet和TreeSet是两个典型的Set集合实现，**HashSet性能总是比TreeSet好**，因为TreeSet需要用红黑树算法维护排序。当需要一个有次序的Set的时候才需要用到TreeSet。LinkedHashSet普通的插入删除操作要比HashSet慢，因为要维护链接次序，但是在遍历上面性能比HashSet高。
+
+**Set的三个实现类HashSet、TreeSet、EumSet都是线程不安全的。如果有多个线程同时访问集合，并且有超过一个线程修改集合，则必须手动进行同步。**
+
+### List集合
+-
+
+List集合代表一个**有序、可重复**的集合。索引从0开始。
+
+#### List接口和ListIterator接口
+
+List继承Collection接口，并提供了一些操作方法：
+
+* void add(int index,Object element) 插入到指定index处
+* boolean addAll(int index, Collection c)
+* Object get(int index)
+* int indexOf(Object obj)返回Object的位置
+* int lastIndexOf(Object obj)返回对象最后一次出现的位置
+* Object remove(int index)删除并返回index处的元素
+* Object set(int index,Object obj)将index处元素替换，并返回新元素
+* List subList(int fromIndex,int toIndex)返回从fromIndex到toIndex的子集合
+
+**List集合因为可以根据index索引，因此也可以用for循环进行遍历。**
+
+set方法不能改变List长度。
+
+**与Set集合只提供一个iterator（）方法不同，List还提供了一个listIterator（）方法，返回一个ListIterator对象。ListIterator类继承了Iterator接口，在Iterator基础上增加了以下操作：**
+
+* boolean hasPrevious() 返回是否存在上一个元素
+* Object previous() 返回上一个元素
+* void add()在指定位置插入
+
+#### ArrayList和Vector实现类
+
+作为List接口两个典型实现类，完全实现前面List所有方法。**它们封装了一个动态的、允许再分配的Object[]数组，使用initialCapacity参数来设置数组长度，当超过长度时会自动增加。**
+
+为了提高性能，提供两个方法来重新分配Objecyp[]数组：
+
+* void ensureCapacity(int minCapacity) 将集合的数组增加到ensureCapacity
+* void trimToSize() 调整集合数组大小为当前数组个数。
+
+Vector是一个老的集合，跟**ArrayList在用法上几乎一样**。不过Vector是线程安全的，ArrayList是线程不安全的，因此ArrayList在效率上比Vector要高。
+
+Vector还有一个Stack子类，用于模拟栈，使用“后进先出（LIFO）”。
+
+### Queue集合
+-
+
+用于模拟队列这种结构，队列通常是**“先进先出（FIFO）”的容器**。队列头部保存最先进来的元素，尾部保存新插入的元素，先访问尾部。**队列一般不允许随机访问队列中的元素。**
+
+Queue接口定义以下方法：
+
+* void add(Object e)
+* Object element()获取队列头部元素
+* boolean offer(Object e)将元素插入尾部，当有容量限制的队列此方法比add好
+* Object peek()获取头部元素，空返回Null
+* Object poll()获取头部元素，并且删除该元素，空返回null
+* Object remove()获取头部并删除
+
+#### PriorityQueue实现类
+
+这个类是一个比较标准的队列，但不是绝对标准，因为它会重新进行排序，排序顺序是按照元素的大小。
+
+两种排序方式：
+
+* **自然排序：**集合中的元素必须实现了Comparable接口，并且是同一个类的多个实例，否则可能造成错误
+* **定制排序：**创建队列是，传入一个Comparator对象，该对象负责对队列中所有元素进行排序。元素不要求实现Comparable接口。
+
+#### Deque接口与ArrayDeque实现类
+
+**Deque是Queue接口的子接口，代表一个双端队列，其中定义了以下双端队列方法：**
+
+* void addFirst(Object e)插入双端队列的开头
+* void addLast(Object e)插入队尾
+* Iterator descendingIterator() 返回迭代器，以逆向顺序来迭代元素
+* Obeject getFirst()获取但不删除第一个元素
+* Object getLast()
+* boolean offerFirst(Object e)插入开头
+* boolean offerLast(Object e)插入结尾
+* Object peekFirst()
+* Object peekLast()
+* Object pollFirst()
+* Object pollLast()
+* Object pop()(栈方法) pop出栈顶元素，相当于removeFirst()
+* void push(Object e) (栈方法)push到栈顶 相当于addFirst(e)
+* Object removeFirst()
+* Object removeFirstOccurrence(Object o)删除队列第一次出现的o元素
+* Object removeLastOccurrence(Object o)
+* void removeLast()
+
+**可以看出Deque不仅可以当队列使用，也可以当栈来使用。**
+
+
+
 
